@@ -2579,7 +2579,7 @@ Future<bool> confirmSavedPasswordConnection(String id,
   return _savedPasswordConfirmation.confirm(
     id: id,
     enabled:
-        !isWeb && mainGetLocalBoolOptionSync(kOptionAllowConfirmSavedPassword),
+        !isWeb && mainGetLocalBoolOptionSync(kOptionEnableConfirmSavedPassword),
     loginMethod: loginMethod,
     hasSavedPassword: (peerId) async {
       if (hasSavedAddressBookPassword ||

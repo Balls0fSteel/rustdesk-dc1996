@@ -1,3 +1,7 @@
+> **UltraRustDesk:** this branch builds UltraRustDesk, a rebranded RustDesk with a
+> confirmation before connecting with saved passwords. See
+> [ultrarustdesk/README.md](ultrarustdesk/README.md) for the changes, builds and known limits.
+
 <p align="center">
   <img src="res/logo-header.svg" alt="RustDesk - Your remote desktop"><br>
   <a href="#raw-steps-to-build">Build</a> •

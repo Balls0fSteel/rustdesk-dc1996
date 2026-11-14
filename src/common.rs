@@ -1227,6 +1227,21 @@ pub fn get_app_name() -> String {
     hbb_common::config::APP_NAME.read().unwrap().clone()
 }
 
+/// The UltraRustDesk brand name.
+pub const ULTRA_APP_NAME: &str = "UltraRustDesk";
+
+/// Config file names, IPC paths, service names and install paths all derive from
+/// `APP_NAME`, so each process sets it before it reads any config.
+///
+/// Linux keeps the internal name: its deb/rpm/AppImage/Flatpak packaging and the
+/// systemd unit still use the `rustdesk` names that Linux code looks up by app name.
+pub fn init_app_name() {
+    #[cfg(not(target_os = "linux"))]
+    {
+        *config::APP_NAME.write().unwrap() = ULTRA_APP_NAME.to_owned();
+    }
+}
+
 #[inline]
 pub fn is_rustdesk() -> bool {
     hbb_common::config::APP_NAME.read().unwrap().eq("RustDesk")
@@ -2507,6 +2522,7 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 }
 
 pub fn load_custom_client() {
+    init_app_name();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());

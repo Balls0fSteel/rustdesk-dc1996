@@ -531,7 +531,7 @@ class _GeneralState extends State<_General> {
         _OptionCheckBox(
             context,
             'Confirm before connecting with saved passwords',
-            kOptionAllowConfirmSavedPassword,
+            kOptionEnableConfirmSavedPassword,
             isServer: false),
       if (!isWeb && !incomingOnly)
         _OptionCheckBox(context, 'Confirm before closing multiple tabs',
