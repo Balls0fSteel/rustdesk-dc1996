@@ -25,12 +25,16 @@ built from the `ultrarustdesk` branch.
 
 ## Building
 
-Run the **UltraRustDesk Build** workflow (`.github/workflows/ultrarustdesk.yml`)
-from the Actions tab, or:
+The **UltraRustDesk Build** workflow (`.github/workflows/ultrarustdesk.yml`)
+runs on every push to the `ultrarustdesk` branch that changes more than
+Markdown files. To rebuild without a code change, push an empty commit:
 
 ```sh
-gh workflow run ultrarustdesk.yml --ref ultrarustdesk
+git commit --allow-empty -m "Rebuild UltraRustDesk" && git push
 ```
+
+GitHub shows a "Run workflow" button only for workflows on the repository's
+default branch, so manual runs need this file on `master` too.
 
 It recreates the `ultrarustdesk-nightly` pre-release at the built commit, runs
 the upstream `flutter-build.yml` for every platform, and renames the assets to

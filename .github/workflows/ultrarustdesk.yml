@@ -2,10 +2,17 @@ name: UltraRustDesk Build
 
 # Builds every platform with the upstream flutter-build.yml and publishes the
 # results as a pre-release, then renames the assets from rustdesk-* to
-# ultrarustdesk-*. Run it by hand from the Actions tab or with:
-#   gh workflow run ultrarustdesk.yml --ref ultrarustdesk
+# ultrarustdesk-*. It runs on every push to the ultrarustdesk branch.
+# GitHub offers the manual "Run workflow" button only for workflows on the
+# default branch, so workflow_dispatch works once this file is on master.
 
 on:
+  push:
+    branches:
+      - ultrarustdesk
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
   workflow_dispatch:
     inputs:
       tag:
@@ -14,7 +21,7 @@ on:
         default: "ultrarustdesk-nightly"
 
 concurrency:
-  group: ultrarustdesk-${{ inputs.tag }}
+  group: ultrarustdesk-${{ inputs.tag || 'ultrarustdesk-nightly' }}
   cancel-in-progress: false
 
 jobs:
@@ -24,7 +31,7 @@ jobs:
       contents: write
     env:
       GH_TOKEN: ${{ github.token }}
-      TAG: ${{ inputs.tag }}
+      TAG: ${{ inputs.tag || 'ultrarustdesk-nightly' }}
     steps:
       - name: Recreate the release at this commit
         run: |
@@ -49,7 +56,7 @@ jobs:
     secrets: inherit
     with:
       upload-artifact: true
-      upload-tag: ${{ inputs.tag }}
+      upload-tag: ${{ inputs.tag || 'ultrarustdesk-nightly' }}
 
   rename-assets:
     needs: [prepare-release, build]
@@ -59,7 +66,7 @@ jobs:
       contents: write
     env:
       GH_TOKEN: ${{ github.token }}
-      TAG: ${{ inputs.tag }}
+      TAG: ${{ inputs.tag || 'ultrarustdesk-nightly' }}
     steps:
       - name: Rename rustdesk-* assets to ultrarustdesk-*
         run: |
